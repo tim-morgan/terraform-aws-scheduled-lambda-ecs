@@ -21,7 +21,7 @@ module "scheduled-lambda-function" {
     project                 = "demo"
     contact                 = "myemail@example.com"
 
-    schedule_expression     = "rate(30 minutes)"
+    schedule_expression     = "rate(5 minutes)"
 
     # Required from ECS deployment to set lambda permissions to run the task
     ecs_task_definition_family  = aws_ecs_task_definition.example_task.family
