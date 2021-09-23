@@ -5,7 +5,7 @@ A Terraform module that creates a scheduled Lambda function to run an ECS task i
 Resources created:
 *  EventBridge Rule
 *  Lambda Function
-*  Corresponding IAM roles/policis
+*  Corresponding IAM roles/policies
 *  Corresponding CloudWatch Logs 
 
 ## Example Usage
