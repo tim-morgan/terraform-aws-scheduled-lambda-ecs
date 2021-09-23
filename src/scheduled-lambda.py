@@ -4,29 +4,44 @@ import os
 
 ECS_CLUSTER = os.getenv('ECS_CLUSTER', 'example-cluster') 
 ECS_TASK_DEF = os.getenv('ECS_TASK_DEF', 'example_task')
-ECS_SUBNETS = os.getenv('ECS_SUBNET', 'subnet-079e722e170867cd1')
-ECS_SECURITY_GROUPS = os.getenv('ECS_SECURITY_GROUPS', 'sg-0b8fe032ea40d0380')
+ECS_SUBNETS = os.getenv('ECS_SUBNET', 'subnet-0f8845e279fb318a1')
+ECS_SECURITY_GROUPS = os.getenv('ECS_SECURITY_GROUPS', 'sg-09110ce341a5e7f5a')
 ECS_ASSIGN_PUBLIC_IP = os.getenv('ECS_ASSIGN_PUBLIC_IP', 'DISABLED')
 
 ecs = boto3.client('ecs')
 
 
 
-def get_running_tasks():
-    runnings_tasks = ecs.list_tasks(
-                        cluster = ECS_CLUSTER,
-                        desiredStatus = 'RUNNING',
-                        launchType = 'FARGATE'
-                    )['taskArns']
-    return runnings_tasks
+def is_task_running(cluster: str, task_def_name: str) -> bool:
+    is_running = False
+
+    # Get a list of all runnings tasks in the cluster. If
+    # there are no running tasks, then return False.
+    runnings_tasks_arn_list = ecs.list_tasks(
+                                    cluster = cluster,
+                                    desiredStatus = 'RUNNING',
+                                    launchType = 'FARGATE'
+                                )['taskArns']
+
+    # If there are tasks running in the cluster, then check
+    # each one to see if is the one we are attempting to start
+    if len(runnings_tasks_arn_list):
+        running_tasks_details_list = ecs.describe_tasks(
+                                cluster = cluster,
+                                tasks = runnings_tasks_arn_list
+                            )['tasks']
+        for task in running_tasks_details_list:
+            is_running = True if task_def_name in task['group'] else False
+
+    return is_running
 
 
 def main():
-    running_tasks = get_running_tasks()
-    print(f'running_tasks: {len(running_tasks)}')
+    task_running = is_task_running(ECS_CLUSTER, ECS_TASK_DEF)
+    print(f'Task "{ECS_TASK_DEF}" running: {task_running}', flush=True)
 
-    if len(running_tasks) == 0:
-        print('Starting task')
+    if not task_running:
+        print('Starting task', flush=True)
         ecs.run_task(
             cluster = ECS_CLUSTER,
             count = 1,
@@ -41,7 +56,7 @@ def main():
             },
         )
     else:
-        print('Maximum number of tasks running.')
+        print('Maximum number of tasks running. Not starting new tasks.', flush=True)
 
 
 def lambda_handler(event, context):
