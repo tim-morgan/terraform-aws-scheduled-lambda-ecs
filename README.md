@@ -13,19 +13,22 @@ Resources created:
 module "scheduled-lambda-function" {
     source = "git@github.com:tim-morgan/terraform-aws-scheduled-lambda-ecs"
 
-    lambda_name             = "scheduled-run-ecs"
-    lambda_description      = "Lambda to run an ECS task."
-    environment             = "dev"
+    lambda_name                 = "scheduled-run-ecs"
+    lambda_description          = "Lambda to run an ECS task."
+    environment                 = "dev"
 
-    service                 = "Lambda demo"
-    project                 = "demo"
-    contact                 = "myemail@example.com"
+    service                     = "Lambda demo"
+    project                     = "demo"
+    contact                     = "myemail@example.com"
 
-    schedule_expression     = "rate(5 minutes)"
+    schedule_expression         = "rate(5 minutes)"
 
-    # Required from ECS deployment to set lambda permissions to run the task
+    # Required from ECS deployment
+    ecs_cluster_name            = aws_ecs_cluster.example_cluster.name
     ecs_task_definition_family  = aws_ecs_task_definition.example_task.family
     ecs_task_execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+    ecs_subnets                 = module.vpc.private_subnets 
+    ecs_security_group          = module.vpc.default_security_group_id
 }
 ```
 
