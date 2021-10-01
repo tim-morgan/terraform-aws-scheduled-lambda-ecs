@@ -1,15 +1,14 @@
 import boto3
-import os
+import json, os
 
 
-ECS_CLUSTER = os.getenv('ECS_CLUSTER', 'example-cluster') #
-ECS_TASK_DEF = os.getenv('ECS_TASK_DEF', 'example_task') #
-ECS_SUBNETS = os.getenv('ECS_SUBNET', 'subnet-0f8845e279fb318a1')
-ECS_SECURITY_GROUPS = os.getenv('ECS_SECURITY_GROUPS', 'sg-09110ce341a5e7f5a')
+ECS_CLUSTER = os.getenv('ECS_CLUSTER') 
+ECS_TASK_DEF = os.getenv('ECS_TASK_DEF') 
+ECS_SUBNETS = json.loads(os.getenv('ECS_SUBNETS'))
+ECS_SECURITY_GROUP = os.getenv('ECS_SECURITY_GROUP')
 ECS_ASSIGN_PUBLIC_IP = os.getenv('ECS_ASSIGN_PUBLIC_IP', 'DISABLED')
 
 ecs = boto3.client('ecs')
-
 
 
 def is_task_running(cluster: str, task_def_name: str) -> bool:
@@ -49,8 +48,8 @@ def main():
             taskDefinition = ECS_TASK_DEF,
             networkConfiguration={
                 'awsvpcConfiguration': {
-                    'subnets': [ ECS_SUBNETS ],
-                    'securityGroups': [ ECS_SECURITY_GROUPS ],
+                    'subnets': ECS_SUBNETS ,
+                    'securityGroups': [ ECS_SECURITY_GROUP ],
                     'assignPublicIp': ECS_ASSIGN_PUBLIC_IP
                 }
             },

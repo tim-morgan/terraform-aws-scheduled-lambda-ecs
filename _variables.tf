@@ -57,13 +57,20 @@ variable "ecs_task_execution_role_arn" {
     description = "The ECS task execurtion role arn."
 }
 
+
 ###########################################################
 #                   ECS Networking                        #
 ###########################################################
 
+variable "ecs_subnets" {
+    type = list(string)
+    description = "List of subnets to deploy the ECS task into."
+}
 
-
-
+variable "ecs_security_group" {
+    type = string
+    description = "The security group that will be assigned to the ECS task."
+}
 
 
 ###########################################################

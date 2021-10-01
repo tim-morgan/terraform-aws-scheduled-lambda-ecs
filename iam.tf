@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "scheduled_lambda" {
 
     statement {
         effect    = "Allow"
-        actions   = [ "ecs:ListTasks" ]
+        actions   = [ "ecs:ListTasks", "ecs:DescribeTasks" ]
         resources = [ "*" ]
     }
 
