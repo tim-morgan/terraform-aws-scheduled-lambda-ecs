@@ -72,6 +72,11 @@ variable "ecs_security_group" {
     description = "The security group that will be assigned to the ECS task."
 }
 
+variable "ecs_assign_public_ip" {
+    type = string 
+    description = "Assigns a public IP to the ECS task. (DISABLED/ENABLED)"
+    default = "DISABLED"
+}
 
 ###########################################################
 #                Lambda Configuration                     #
