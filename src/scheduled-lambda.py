@@ -37,10 +37,9 @@ def is_task_running(cluster: str, task_def_name: str) -> bool:
 
 def main():
     task_running = is_task_running(ECS_CLUSTER, ECS_TASK_DEF)
-    print(f'Task "{ECS_TASK_DEF}" running: {task_running}', flush=True)
 
     if not task_running:
-        print('Starting task', flush=True)
+        print(f'Starting task: {ECS_TASK_DEF}', flush=True)
         ecs.run_task(
             cluster = ECS_CLUSTER,
             count = 1,
@@ -55,7 +54,7 @@ def main():
             },
         )
     else:
-        print('Maximum number of tasks running. Not starting new tasks.', flush=True)
+        print(f'Task "{ECS_TASK_DEF}" is already running. Not starting new task.', flush=True)
 
 
 def lambda_handler(event, context):
