@@ -42,15 +42,27 @@ variable "project" {
 #                        ECS                              #
 ###########################################################
 
+variable "ecs_cluster_name" {
+    type = string 
+    description = "The ECS Cluster name for the task to be deployed to."
+}
+
 variable "ecs_task_definition_family" {
     type        = string
-    description = "The ECS Task Definition family name."
+    description = "The ECS Task Definition family name (without version number)."
 }
 
 variable "ecs_task_execution_role_arn" {
     type        = string
     description = "The ECS task execurtion role arn."
 }
+
+###########################################################
+#                   ECS Networking                        #
+###########################################################
+
+
+
 
 
 

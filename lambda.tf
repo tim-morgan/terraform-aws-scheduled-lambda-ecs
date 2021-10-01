@@ -27,13 +27,12 @@ resource "aws_lambda_function" "lambda" {
 
     source_code_hash = filebase64sha256(local.filename) 
 
-    # dynamic "environment" {
-    #     for_each = var.lambda_environment == null ? [] : [ var.lambda_environment ]
-
-    #     content {
-    #         variables = environment.value
-    #     }
-    # }
+    environment {
+        variables = {
+            ECS_TASK_DEF = var.ecs_task_definition_family,
+            ECS_CLUSTER = var.ecs_cluster_name
+        }
+    }
 
     tags = {
         Service     = var.service     
