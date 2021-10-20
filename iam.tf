@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "scheduled_lambda" {
     statement {
         effect    = "Allow"
         actions   = [ "iam:PassRole" ]
-        resources = [ var.ecs_role_arns ]
+        resources = var.ecs_role_arns
     }
 }
 
