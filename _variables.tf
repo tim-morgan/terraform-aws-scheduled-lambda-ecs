@@ -52,9 +52,14 @@ variable "ecs_task_definition_family" {
     description = "The ECS Task Definition family name (without version number)."
 }
 
-variable "ecs_task_execution_role_arn" {
-    type        = string
-    description = "The ECS task execurtion role arn."
+# variable "ecs_task_execution_role_arn" {
+#     type        = string
+#     description = "The ECS task execurtion role arn."
+# }
+
+variable "ecs_role_arns" {
+    type = list(string)
+    description = "The ECS task roles - task execution role and task role."
 }
 
 
