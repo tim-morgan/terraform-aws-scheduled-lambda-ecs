@@ -21,7 +21,7 @@ module "scheduled-lambda-function" {
     # Required from ECS deployment
     ecs_cluster_name            = aws_ecs_cluster.example_cluster.name
     ecs_task_definition_family  = aws_ecs_task_definition.example_task.family
-    ecs_task_execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+    ecs_role_arns               = [ aws_iam_role.ecs_task_execution_role.arn ]
     ecs_subnets                 = module.vpc.private_subnets 
     ecs_security_group          = module.vpc.default_security_group_id
 }
