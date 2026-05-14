@@ -30,7 +30,9 @@ def is_task_running(cluster: str, task_def_name: str) -> bool:
                                 tasks = runnings_tasks_arn_list
                             )['tasks']
         for task in running_tasks_details_list:
-            is_running = True if task_def_name in task['group'] else False
+            if task_def_name in task.get('group', ''):
+                is_running = True
+                break
 
     return is_running
 
