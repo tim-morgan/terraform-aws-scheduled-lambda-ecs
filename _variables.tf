@@ -94,8 +94,8 @@ variable "schedule_expression" {
 
 variable "lambda_runtime" {
     type        = string
-    description = "Lambda runtime. python3.8, nodejs10.x, etc"
-    default     = "python3.8"
+    description = "Lambda runtime. python3.12, nodejs10.x, etc"
+    default     = "python3.12"
 }
 
 variable "lambda_timeout" {
